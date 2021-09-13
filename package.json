@@ -1,5 +1,5 @@
 {
-  "name": "code-runner",
+  "name": "online-judge",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yashgupta417/code-runner.git"
+    "url": "git+https://github.com/yashgupta417/online-judge.git"
   },
   "author": "Yash Gupta",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/yashgupta417/code-runner/issues"
+    "url": "https://github.com/yashgupta417/online-judge/issues"
   },
-  "homepage": "https://github.com/yashgupta417/code-runner#readme",
+  "homepage": "https://github.com/yashgupta417/online-judge#readme",
   "dependencies": {
     "express": "^4.17.1"
   },
