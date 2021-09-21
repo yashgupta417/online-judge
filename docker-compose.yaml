@@ -1,0 +1,6 @@
+version: "3.7"
+services:
+  online-judge:
+    build: ./
+    ports: 
+      - 8000:3000
