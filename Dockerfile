@@ -10,14 +10,14 @@ COPY ["package.json", "package-lock.json", "./"]
 # installing npm packages
 RUN npm install
 
+# installing binaries
+RUN apt-get update && apt-get install g++ python
+
 # configuring runexec
-RUN apt install software-properties-common && add-apt-repository ppa:sosy-lab/benchmarking && \
+RUN add-apt-repository ppa:sosy-lab/benchmarking && \
     apt install benchexec && \
     mount -t cgroup cgroup /sys/fs/cgroup && \
     chmod o+wt,g+w /sys/fs/cgroup/
-
-# installing binaries
-RUN apt-get update && apt-get install g++ python
 
 COPY . .
 
