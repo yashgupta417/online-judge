@@ -14,10 +14,10 @@ RUN npm install
 RUN apt-get update && apt-get install g++ python
 
 # configuring runexec
-RUN apt-get -y install software-properties-common && add-apt-repository ppa:sosy-lab/benchmarking && apt-get update --allow-unauthenticated && \
-    apt install benchexec && \
-    mount -t cgroup cgroup /sys/fs/cgroup && \
-    chmod o+wt,g+w /sys/fs/cgroup/
+# RUN apt-get -y install software-properties-common && add-apt-repository ppa:sosy-lab/benchmarking && apt-get update && \
+#     apt install benchexec && \
+#     mount -t cgroup cgroup /sys/fs/cgroup && \
+#     chmod o+wt,g+w /sys/fs/cgroup/
 
 COPY . .
 
