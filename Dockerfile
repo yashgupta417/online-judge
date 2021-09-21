@@ -11,7 +11,7 @@ COPY ["package.json", "package-lock.json", "./"]
 RUN npm install
 
 # configuring runexec
-RUN add-apt-repository ppa:sosy-lab/benchmarking && \
+RUN apt install software-properties-common && add-apt-repository ppa:sosy-lab/benchmarking && \
     apt install benchexec && \
     mount -t cgroup cgroup /sys/fs/cgroup && \
     chmod o+wt,g+w /sys/fs/cgroup/
