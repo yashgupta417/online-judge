@@ -4,3 +4,5 @@ services:
     build: ./
     ports: 
       - 8000:3000
+    volumes: 
+     - /sys/fs/cgroup:/sys/fs/cgroup:rw
