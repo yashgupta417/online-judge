@@ -19,6 +19,8 @@ RUN wget https://github.com/sosy-lab/benchexec/releases/download/3.8/benchexec_3
 
 COPY . .
 
+RUN chmod -R a=rx languages
+
 ENTRYPOINT [ "npm", "start" ]
 
 
