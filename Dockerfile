@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install g++ python
 #     mount -t cgroup cgroup /sys/fs/cgroup && \
 #     chmod o+wt,g+w /sys/fs/cgroup/
 
-RUN wget https://github.com/sosy-lab/benchexec/releases/download/v3.8/benchexec_3.8-1_all.deb && \
+RUN wget https://github.com/sosy-lab/benchexec/releases/download/3.8/benchexec_3.8-1_all.deb && \
     apt install --install-recommends ./benchexec_*.deb && adduser root benchexec
 
 COPY . .
