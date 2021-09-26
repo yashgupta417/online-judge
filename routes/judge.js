@@ -1,7 +1,7 @@
 const express = require("express")
 const multer = require("multer")
 const router  = express.Router()
-const {mkdtemp} = require("fs/promises")
+const {mkdtemp, writeFile} = require("fs/promises")
 const path = require("path")
 const os = require("os")
 const Executor = require("../utils/executor")
@@ -28,17 +28,23 @@ const upload = multer({ storage: storage }).fields([
     }
 ])
 
-const allowedLanguages = [
-    "cpp"
-]
+const allowedLanguages = {
+    "c++" : {
+        extension: "cpp"
+    }
+}
 
 router.post("/api/judge", upload, async function(req, res) {
-    sourceFile = req.files['source'][0]
-    inputFile = req.files['input'][0]
 
-    if (!allowedLanguages.includes(req.body.language)) 
+    if (!(req.body.language in allowedLanguages)) 
         return res.status(400).send({status: "FAILURE", message: "Language not available."})
 
+    if (!req.files['source'] || !req.files['input']) {
+        return res.status(400).send({status: "FAILURE", message: "Source(text/file) and Input(text/file) not given."})
+    }
+
+    sourceFile = req.files['source'][0]
+    inputFile = req.files['input'][0]
     const executor = new Executor(sourceFile.path, inputFile.path, req.body.timeLimit, req.body.memoryLimit, req.body.language)
     const result = await executor.run()
 
