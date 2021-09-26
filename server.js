@@ -1,7 +1,10 @@
 const express = require("express")
 const app = express()
+const cors = require('cors');
 const HOST = '0.0.0.0'
 const PORT = 3000
+
+app.use(cors());
 
 //for handling POST requests
 app.use(express.json())
