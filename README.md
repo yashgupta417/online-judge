@@ -1,5 +1,5 @@
 # online-judge
-Online-Judge provides an `API` to run your code, currently available for only `C++`. It accepts 'sourceFile', 'inputFile' and returns 'status' and 'output' along with 'time' and 'memory' taken by the program. It also lets you set time and memory limits.
+Online-Judge provides an `API` to run your code, currently available for `C++`, `Python`. It accepts 'sourceFile', 'inputFile' and returns 'status' and 'output' along with 'time' and 'memory' taken by the program. It also lets you set time and memory limits.
 
 ## To Run
 1. Clone Repo
