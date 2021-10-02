@@ -5,7 +5,6 @@ const path = require("path")
 const os = require("os")
 
 class Executor {
-
     
     constructor(sourceFile, inputFile, timeLimit, memoryLimit, language) {
         this.sourceFile = sourceFile
