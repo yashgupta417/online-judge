@@ -20,12 +20,12 @@ RUN wget https://github.com/sosy-lab/benchexec/releases/download/3.8/benchexec_3
 COPY . .
 
 # giving permissions to run scripts
-RUN chmod -R a=rx languages
+RUN chmod -R a=rx scripts
 
 # converting dos format scripts to unix format
-RUN cd languages && \
-    for script in `ls`; do \
-        sed -i -e 's/\r$//' $script; \
+RUN cd scripts && \
+    for filename in `ls`; do \
+        sed -i -e 's/\r$//' $filename; \
     done && cd ..
 
 ENTRYPOINT [ "npm", "start" ]

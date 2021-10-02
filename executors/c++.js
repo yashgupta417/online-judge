@@ -2,7 +2,7 @@ const util = require('util')
 const exec = util.promisify(require('child_process').exec)
 const {mkdtemp, readFile} = require("fs/promises")
 const path = require("path")
-const os = require("os")
+const Status = require("../utils/status")
 
 class Executor {
     
@@ -18,25 +18,24 @@ class Executor {
         const baseDir = path.dirname(this.sourceFile)
         const params = `${this.sourceFile} ${this.inputFile} ${baseDir} ${this.timeLimit} ${this.memoryLimit}`
 
-        try {
-            const { stdout, stderr } = await exec(`./languages/${this.language}.sh ${params}`)
-
-            const output = await readFile(path.join(baseDir, "output.log"),{encoding: "utf8"})
-            console.log(stdout)
-            console.log(stderr)
-            console.log(output)
-            // return output, memory_taken, time_taken
-            return {
-                status: this.generateStatus(stdout),
-                output: this.cleanOutput(output),
-                memory: this.extractStat(stdout, "memory"),
-                time: this.extractStat(stdout, "cputime")
-            }
-        } catch(err) {
-            console.log(err)
+        const { stdout, stderr } = await exec(`./scripts/${this.language}.sh ${params}`)
+        console.log(stdout)
+        console.log(stderr)
+        if (stdout.includes("COMPILATION_ERROR")) {
             return  {
-                status: "COMPILATION_ERROR",
+                status: Status.COMPILATION_ERROR,
+                output: stderr,
+                memory: "-1",
+                time: "-1"
             }
+        }
+        const output = await readFile(path.join(baseDir, "output.log"),{encoding: "utf8"})
+        console.log(output)
+        return {
+            status: this.generateStatus(stdout),
+            output: this.cleanOutput(output),
+            memory: this.extractStat(stdout, "memory"),
+            time: this.extractStat(stdout, "cputime")
         }
     }
 

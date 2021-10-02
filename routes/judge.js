@@ -4,7 +4,7 @@ const router  = express.Router()
 const {mkdtemp, writeFile} = require("fs/promises")
 const path = require("path")
 const os = require("os")
-const Executor = require("../utils/executor")
+const Executor = require("../executors/c++")
 
 const storage = multer.diskStorage({
     destination: async function (req, file, cb) {
