@@ -8,7 +8,7 @@ const BaseExecutor = require("./base")
 class CppExecutor extends BaseExecutor {
     
     constructor(sourceFile, inputFile, timeLimit, memoryLimit) {
-        super(sourceFile, inputFile, timeLimit, memoryLimit, "c++")
+        super(sourceFile, inputFile, timeLimit, memoryLimit, "python")
     }
 
     async run() {
@@ -18,25 +18,17 @@ class CppExecutor extends BaseExecutor {
         const { stdout, stderr } = await exec(`./scripts/${this.language}.sh ${params}`)
         console.log(stdout)
         console.log(stderr)
-        if (stdout.includes("COMPILATION_ERROR")) {
-            return  {
-                status: Status.COMPILATION_ERROR,
-                output: stderr,
-                memory: "-1",
-                time: "-1"
-            }
-        }
         const output = await readFile(path.join(baseDir, "output.log"),{encoding: "utf8"})
         console.log(output)
         return {
-            status: this.generateStatus(stdout),
+            status: this.generateStatus(stdout,output),
             output: this.cleanOutput(output),
             memory: this.extractStat(stdout, "memory"),
             time: this.extractStat(stdout, "cputime")
         }
     }
 
-    generateStatus(stdout) {
+    generateStatus(stdout, output) {
         const statusMap = {
             "memory" : Status.MEMORY_LIMIT_EXCEEDED,
             "cputime" : Status.TIME_LIMIT_EXCEEDED
@@ -45,11 +37,16 @@ class CppExecutor extends BaseExecutor {
         if (this.extractStat(stdout, "returnvalue") != 0 ) {
             if (stdout.includes("terminationreason")) {
                 return statusMap[this.extractStat(stdout, "terminationreason")]
-            } else {
-                return Status.RUNTIME_ERROR
             }
-        }
 
+            if (output.includes("RuntimeError"))
+                return Status.RUNTIME_ERROR
+            
+            if (output.includes("MemoryError"))
+                return Status.MEMORY_LIMIT_EXCEEDED
+
+            return Status.COMPILATION_ERROR
+        }
         return Status.SUCCESS
     }
 }

@@ -4,7 +4,6 @@ const router  = express.Router()
 const {mkdtemp, writeFile} = require("fs/promises")
 const path = require("path")
 const os = require("os")
-const Executor = require("../executors/c++")
 
 const storage = multer.diskStorage({
     destination: async function (req, file, cb) {
@@ -29,8 +28,11 @@ const upload = multer({ storage: storage }).fields([
 ])
 
 const allowedLanguages = {
-    "c++" : {
+    "c++": {
         extension: "cpp"
+    },
+    "python": {
+        extension: "py"
     }
 }
 
@@ -45,6 +47,7 @@ router.post("/api/judge", upload, async function(req, res) {
 
     sourceFile = req.files['source'][0]
     inputFile = req.files['input'][0]
+    const Executor = require(`../executors/${req.body.language}`)
     const executor = new Executor(sourceFile.path, inputFile.path, req.body.timeLimit, req.body.memoryLimit, req.body.language)
     const result = await executor.run()
 
